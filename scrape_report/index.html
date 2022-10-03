@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Scrape report</title>
+  <style>
+    html {
+      line-height: 1.5;
+      font-family: Georgia, serif;
+      font-size: 20px;
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 1em;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, 'Lucida Console', Consolas, monospace;
+      font-size: 85%;
+      margin: 0;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Scrape report</h1>
+</header>
+<div id="5d52cefe" class="cell code" data-execution_count="25">
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> plotly.express <span class="im">as</span> px</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> plotly.io <span class="im">as</span> pio</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>pio.renderers.default <span class="op">=</span> <span class="st">&quot;iframe&quot;</span></span></code></pre></div>
+</div>
+<div id="d143191b" class="cell code" data-execution_count="26">
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>sys.path.append(<span class="st">&#39;..&#39;</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> src.transform <span class="im">import</span> RegusTransform</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> pd.read_json(<span class="st">&#39;../src/scrape/regus/scraped_data_usa1.json&#39;</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> RegusTransform(data).structured</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>data</span></code></pre></div>
+<div class="output execute_result" data-execution_count="26">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>url</th>
+      <th>title</th>
+      <th>location</th>
+      <th>google_maps</th>
+      <th>features</th>
+      <th>price_office_space</th>
+      <th>price_coworking</th>
+      <th>price_virtual_offices</th>
+      <th>price_meeting_rooms</th>
+      <th>image_1</th>
+      <th>...</th>
+      <th>desc_h</th>
+      <th>desc_p</th>
+      <th>cnt_private_offices</th>
+      <th>cnt_coworking_desks</th>
+      <th>cnt_meeting_rooms</th>
+      <th>latitude</th>
+      <th>longitude</th>
+      <th>country</th>
+      <th>state</th>
+      <th>city</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>https://www.regus.com/en-us/united-states/cali...</td>
+      <td>303 Twin Dolphin Drive.</td>
+      <td>303 Twin Dolphin Drive, Redwood City, CA 94065</td>
+      <td>https://www.google.com/maps/dir//37.5235361034...</td>
+      <td>City/Town Centre
+Accessible
+Major transport co...</td>
+      <td>385</td>
+      <td>369.0</td>
+      <td>95</td>
+      <td>45</td>
+      <td>https://assets.iwgplc.com/image/upload/CentreI...</td>
+      <td>...</td>
+      <td>A prestigious waterside setting</td>
+      <td>With its favorable climate and great community...</td>
+      <td>78</td>
+      <td>18</td>
+      <td>4</td>
+      <td>37.523537</td>
+      <td>-122.258568</td>
+      <td>united-states</td>
+      <td>california</td>
+      <td>redwood-city</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>https://www.regus.com/en-us/united-states/geor...</td>
+      <td>The Pinnacle Building.</td>
+      <td>The Pinnacle Building, Atlanta, GA 30326</td>
+      <td>https://www.google.com/maps/dir//33.8504455417...</td>
+      <td>Major transport connections
+Meeting Rooms
+On-s...</td>
+      <td>265</td>
+      <td>255.0</td>
+      <td>49</td>
+      <td>29</td>
+      <td>https://assets.iwgplc.com/image/upload/CentreI...</td>
+      <td>...</td>
+      <td>Impressive office in renowned business district</td>
+      <td>Atlanta Pinnacle boasts a prime downtown posit...</td>
+      <td>86</td>
+      <td>24</td>
+      <td>4</td>
+      <td>33.850445</td>
+      <td>-84.360390</td>
+      <td>united-states</td>
+      <td>georgia</td>
+      <td>atlanta</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>https://www.regus.com/en-us/united-states/nort...</td>
+      <td>2530 Meridian Parkway.</td>
+      <td>NC, Durham - RTP Meridian 2530 Meridian Parkwa...</td>
+      <td>https://www.google.com/maps/dir//35.9112578969...</td>
+      <td>City/Town Centre
+Accessible
+Major transport co...</td>
+      <td>189</td>
+      <td>179.0</td>
+      <td>75</td>
+      <td>19</td>
+      <td>https://assets.iwgplc.com/image/upload/CentreI...</td>
+      <td>...</td>
+      <td>Modern design in a leading community</td>
+      <td>Take advantage of our prime location just two ...</td>
+      <td>121</td>
+      <td>13</td>
+      <td>6</td>
+      <td>35.911259</td>
+      <td>-78.899963</td>
+      <td>united-states</td>
+      <td>north-carolina</td>
+      <td>durham</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>https://www.regus.com/en-us/united-states/flor...</td>
+      <td>5201 Blue Lagoon Drive.</td>
+      <td>Waterford Business Park, Miami, FL 33126</td>
+      <td>https://www.google.com/maps/dir//25.7834703719...</td>
+      <td>City/Town Centre
+Major transport connections
+M...</td>
+      <td>299</td>
+      <td>285.0</td>
+      <td>95</td>
+      <td>29</td>
+      <td>https://assets.iwgplc.com/image/upload/CentreI...</td>
+      <td>...</td>
+      <td>Prime airport location</td>
+      <td>Waste no time with an efficient work environme...</td>
+      <td>178</td>
+      <td>26</td>
+      <td>5</td>
+      <td>25.783470</td>
+      <td>-80.291626</td>
+      <td>united-states</td>
+      <td>florida</td>
+      <td>miami</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>https://www.regus.com/en-us/united-states/cali...</td>
+      <td>400 Continental Boulevard.</td>
+      <td>400 Continental Blvd, El Segundo, CA 90245</td>
+      <td>https://www.google.com/maps/dir//33.9209373731...</td>
+      <td>City/Town Centre
+Accessible
+Gym and Fitness Ro...</td>
+      <td>359</td>
+      <td>339.0</td>
+      <td>109</td>
+      <td>29</td>
+      <td>https://assets.iwgplc.com/image/upload/CentreI...</td>
+      <td>...</td>
+      <td>Impressive architecture, close to household names</td>
+      <td>Prepare to feel inspired at LAX Continental Gr...</td>
+      <td>147</td>
+      <td>16</td>
+      <td>3</td>
+      <td>33.920937</td>
+      <td>-118.390106</td>
+      <td>united-states</td>
+      <td>california</td>
+      <td>el-segundo</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>956</th>
+      <td>https://www.regus.com/en-us/united-states/texa...</td>
+      <td>111 Congress Avenue.</td>
+      <td>111 Congress Avenue, Suite 500, Austin, TX 78704</td>
+      <td>https://www.google.com/maps/dir//30.2635276138...</td>
+      <td>&lt;NA&gt;</td>
+      <td>605</td>
+      <td>579.0</td>
+      <td>129</td>
+      <td>55</td>
+      <td>https://assets.iwgplc.com/image/upload/CentreI...</td>
+      <td>...</td>
+      <td>An inspiring environment to do your best work</td>
+      <td>Stand out from the crowds and competition in a...</td>
+      <td>135</td>
+      <td>8</td>
+      <td>3</td>
+      <td>30.263527</td>
+      <td>-97.743629</td>
+      <td>united-states</td>
+      <td>texas</td>
+      <td>austin</td>
+    </tr>
+    <tr>
+      <th>957</th>
+      <td>https://www.regus.com/en-us/united-states/texa...</td>
+      <td>The Colonnade.</td>
+      <td>15305 Dallas Parkway, Addison, TX 75001</td>
+      <td>https://www.google.com/maps/dir//32.9588440118...</td>
+      <td>&lt;NA&gt;</td>
+      <td>329</td>
+      <td>282.0</td>
+      <td>109</td>
+      <td>45</td>
+      <td>https://assets.iwgplc.com/image/upload/CentreI...</td>
+      <td>...</td>
+      <td>Perfectly placed for business success</td>
+      <td>Basing your business north of Dallas gives opp...</td>
+      <td>162</td>
+      <td>0</td>
+      <td>3</td>
+      <td>32.958843</td>
+      <td>-96.823021</td>
+      <td>united-states</td>
+      <td>texas</td>
+      <td>addison</td>
+    </tr>
+    <tr>
+      <th>958</th>
+      <td>https://www.regus.com/en-us/united-states/geor...</td>
+      <td>3372 Peachtree Road.</td>
+      <td>3372 Peachtree Road, Atlanta,  30326</td>
+      <td>https://www.google.com/maps/dir//33.84868033,-...</td>
+      <td>&lt;NA&gt;</td>
+      <td>299</td>
+      <td>285.0</td>
+      <td>119</td>
+      <td>29</td>
+      <td>https://assets.iwgplc.com/image/upload/CentreI...</td>
+      <td>...</td>
+      <td>Tower above the rest, with luxury office space...</td>
+      <td>Expand your business in the heart of North Buc...</td>
+      <td>75</td>
+      <td>8</td>
+      <td>4</td>
+      <td>33.848679</td>
+      <td>-84.367050</td>
+      <td>united-states</td>
+      <td>georgia</td>
+      <td>atlanta</td>
+    </tr>
+    <tr>
+      <th>959</th>
+      <td>https://www.regus.com/en-us/united-states/ohio...</td>
+      <td>Western Reserve Building.</td>
+      <td>1468 West 9th Street, Cleveland, OH 44113</td>
+      <td>https://www.google.com/maps/dir//41.4972521030...</td>
+      <td>&lt;NA&gt;</td>
+      <td>309</td>
+      <td>216.0</td>
+      <td>95</td>
+      <td>25</td>
+      <td>https://assets.iwgplc.com/image/upload/CentreI...</td>
+      <td>...</td>
+      <td>Knock it out the park at Western Reserve Building</td>
+      <td>Establish your roots in The Forest City and en...</td>
+      <td>111</td>
+      <td>0</td>
+      <td>2</td>
+      <td>41.497253</td>
+      <td>-81.699341</td>
+      <td>united-states</td>
+      <td>ohio</td>
+      <td>cleveland</td>
+    </tr>
+    <tr>
+      <th>960</th>
+      <td>https://www.regus.com/en-us/united-states/mich...</td>
+      <td>The Ford Building.</td>
+      <td>135 N. Old Woodward Ave., Birmingham, MI 48009</td>
+      <td>https://www.google.com/maps/dir//42.5470128945...</td>
+      <td>Lounge
+Major transport connections
+Meeting Roo...</td>
+      <td>339</td>
+      <td>330.0</td>
+      <td>49</td>
+      <td>25</td>
+      <td>https://assets.iwgplc.com/image/upload/CentreI...</td>
+      <td>...</td>
+      <td>Take a landmark address in the heart of the city</td>
+      <td>Get to work in Birmingham with a flexible offi...</td>
+      <td>31</td>
+      <td>0</td>
+      <td>2</td>
+      <td>42.547012</td>
+      <td>-83.214996</td>
+      <td>united-states</td>
+      <td>michigan</td>
+      <td>birmingham</td>
+    </tr>
+  </tbody>
+</table>
+<p>961 rows × 22 columns</p>
+</div>
+</div>
+</div>
+<div id="ff6513bf" class="cell markdown">
+<h3 id="features---format">Features - Format</h3>
+<p><strong>url</strong> - '<a
+href="https://www.regus.com/en-us/%5Bcountry%5D/%5Bcity%5D/%5Bworkspace%5D"
+class="uri">https://www.regus.com/en-us/[country]/[city]/[workspace]</a>'
+<strong>title</strong> - string con el nomber del lugar o edificio
+<strong>location</strong> - '[street], [city], [postal code]'
+<strong>google_maps</strong> - '<a
+href="https://www.google.com/maps/dir//%5Blatitude%5D/%5Blongitude%5D"
+class="uri">https://www.google.com/maps/dir//[latitude]/[longitude]</a>'
+<strong>features</strong> - caracteristicas del lugar separadas por
+saltos de linea ('\n')
+<strong>price_office_space</strong> - numero entero que indica el precio
+por persona por mes ([price]/person/month)
+<strong>price_coworking</strong> - numero entero que indica el precio
+por persona por mes ([price]/person/month)
+<strong>price_virtual_offices</strong> - numero entero que indica el
+precio por mes ([price]/month)
+<strong>price_meeting_rooms</strong> - numero entero que indica el
+precio por hora ([price]/hour)
+<strong>image_1, image_2, image_3</strong> - '<a
+href="https://assets.iwgplc.com/image/upload/CentreImagery/%5Bendpoint%5D"
+class="uri">https://assets.iwgplc.com/image/upload/CentreImagery/[endpoint]</a>'
+<strong>desc_h</strong> - string con el encabezado de la descripcion
+<strong>desc_p</strong> - string con el contenido de la descripcion
+<strong>cnt_private_offices</strong> - entero que indica la cantidad de
+oficinas privadas en el lugar
+<strong>cnt_coworking_desks</strong> - entero que indica la cantidad de
+escritorios en el lugar
+<strong>cnt_meeting_rooms</strong> - entero que indica la cantidad de
+habitaciones para reuniones en el lugar
+<strong>latitude</strong> - latitud en google maps
+<strong>longitud</strong> - longitud en google maps
+<strong>country</strong> - pais
+<strong>state</strong> - estado/provincia
+<strong>city</strong> - ciudad
+</p>
+</div>
+<div id="8ff7b975" class="cell code" data-execution_count="27">
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>data.dtypes</span></code></pre></div>
+<div class="output execute_result" data-execution_count="27">
+<pre><code>url                       string
+title                     string
+location                  string
+google_maps               string
+features                  string
+price_office_space         int32
+price_coworking          float64
+price_virtual_offices      int32
+price_meeting_rooms        int32
+image_1                   string
+image_2                   string
+image_3                   string
+desc_h                    string
+desc_p                    string
+cnt_private_offices        int32
+cnt_coworking_desks        int32
+cnt_meeting_rooms          int32
+latitude                 float32
+longitude                float32
+country                   string
+state                     string
+city                      string
+dtype: object</code></pre>
+</div>
+</div>
+<div id="cd027c9b" class="cell markdown">
+<h3 id="datos-faltantes">Datos faltantes</h3>
+</div>
+<div id="223e6077" class="cell code" data-execution_count="28">
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>null <span class="op">=</span> data.isna().<span class="bu">sum</span>()</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>null_pct <span class="op">=</span> null <span class="op">/</span> data.shape[<span class="dv">0</span>] <span class="op">*</span> <span class="dv">100</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> px.bar(</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    null,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    title <span class="op">=</span> <span class="st">&quot;Datos faltantes por columna&quot;</span>,</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    labels<span class="op">=</span>{<span class="st">&quot;value&quot;</span>: <span class="st">&quot;cantidad&quot;</span>, <span class="st">&quot;index&quot;</span>: <span class="st">&quot;data&quot;</span>, <span class="st">&quot;variable&quot;</span>: <span class="st">&quot;&quot;</span>}</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>fig.show()</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>table <span class="op">=</span> null_pct[[<span class="va">True</span> <span class="cf">if</span> i <span class="op">&gt;</span> <span class="dv">0</span> <span class="cf">else</span> <span class="va">False</span> <span class="cf">for</span> i <span class="kw">in</span> null_pct]]</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">Proporcion de datos faltantes:</span><span class="ch">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> row <span class="kw">in</span> table.items(): <span class="bu">print</span>(<span class="ss">f&#39;</span><span class="sc">{</span>row[<span class="dv">0</span>]<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>row[<span class="dv">1</span>]<span class="sc">:.2f}</span><span class="ss">%&#39;</span>)</span></code></pre></div>
+<div class="output display_data">
+<iframe
+    scrolling="no"
+    width="100%"
+    height="545px"
+    src="iframe_figures/figure_28.html"
+    frameborder="0"
+    allowfullscreen
+></iframe>
+
+</div>
+<div class="output stream stdout">
+<pre><code>
+Proporcion de datos faltantes:
+
+features: 3.02%
+price_coworking: 2.08%
+city: 0.83%
+</code></pre>
+</div>
+</div>
+<div id="50cb549d" class="cell markdown">
+<h3 id="mapa-de-espacios">Mapa de espacios</h3>
+</div>
+<div id="752db1fd" class="cell code" data-execution_count="29">
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> plotly.express <span class="im">as</span> px</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> px.scatter_geo(</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    data, </span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    lat<span class="op">=</span><span class="st">&quot;latitude&quot;</span>,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    lon<span class="op">=</span><span class="st">&quot;longitude&quot;</span>,</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>fig.update_layout(</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>        title <span class="op">=</span> <span class="st">&#39;Working spaces map distribution&#39;</span>,</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>        geo_scope<span class="op">=</span><span class="st">&#39;usa&#39;</span>,</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="output display_data">
+<iframe
+    scrolling="no"
+    width="100%"
+    height="545px"
+    src="iframe_figures/figure_29.html"
+    frameborder="0"
+    allowfullscreen
+></iframe>
+
+</div>
+</div>
+<div id="3f7b98ab" class="cell code" data-execution_count="30">
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>state_counts <span class="op">=</span> data.state.value_counts()</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> px.bar(</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span>state_counts, </span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span>state_counts.index,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">&#39;Espacios en cada estado&#39;</span>,</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    labels<span class="op">=</span>{<span class="st">&quot;y&quot;</span>: <span class="st">&quot;Cantidad de espacios&quot;</span>}</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>fig.show()</span></code></pre></div>
+<div class="output display_data">
+<iframe
+    scrolling="no"
+    width="100%"
+    height="545px"
+    src="iframe_figures/figure_30.html"
+    frameborder="0"
+    allowfullscreen
+></iframe>
+
+</div>
+</div>
+<div id="03e0c99b" class="cell code" data-execution_count="31"
+data-scrolled="false">
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>city_counts <span class="op">=</span> data.city.value_counts()[:<span class="dv">20</span>]</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> px.bar(</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span>city_counts, </span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span>city_counts.index,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">&#39;Top 20 ciudades con mas espacios&#39;</span>,</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    labels<span class="op">=</span>{<span class="st">&quot;y&quot;</span>: <span class="st">&quot;Cantidad de espacios&quot;</span>, <span class="st">&quot;x&quot;</span>: <span class="st">&quot;Ciudades&quot;</span>}</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>fig.show()</span></code></pre></div>
+<div class="output display_data">
+<iframe
+    scrolling="no"
+    width="100%"
+    height="545px"
+    src="iframe_figures/figure_31.html"
+    frameborder="0"
+    allowfullscreen
+></iframe>
+
+</div>
+</div>
+<div id="bb26c0e3" class="cell markdown">
+<h3 id="demostracion-rapida-de-texto-a-html">Demostracion rapida de
+texto a html</h3>
+</div>
+<div id="8047cb4f" class="cell code" data-execution_count="32"
+data-scrolled="false">
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> display, HTML</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>data_html <span class="op">=</span> <span class="kw">lambda</span> x: (</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;&lt;br&gt;&quot;</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> <span class="st">&quot;&lt;div style=&#39;width: 700px&#39;&gt;&quot;</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> <span class="ss">f&quot;&lt;div style=&#39;font-size: 20px&#39;&gt;</span><span class="sc">{</span>x<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">)&lt;/div&gt;&quot;</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Images </span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> <span class="st">&quot;&lt;div class=&#39;images-container&#39;&gt;&quot;</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> <span class="st">&quot;&lt;img class=&#39;image&#39; src=&quot;</span> <span class="op">+</span> data.image_1 <span class="op">+</span> <span class="st">&quot;&gt;&quot;</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> <span class="st">&quot;&lt;img class=&#39;image&#39; src=&quot;</span> <span class="op">+</span> data.image_2 <span class="op">+</span> <span class="st">&quot;&gt;&quot;</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> <span class="st">&quot;&lt;img class=&#39;image&#39; src=&quot;</span> <span class="op">+</span> data.image_3 <span class="op">+</span> <span class="st">&quot;&gt;&quot;</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> <span class="st">&quot;&lt;/div&gt;&quot;</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># description</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> <span class="st">&quot;&lt;h2 class=&#39;subheader&#39;&gt;&quot;</span> <span class="op">+</span> data.desc_h <span class="op">+</span> <span class="st">&quot;&lt;/h2&gt;</span><span class="ch">\n</span><span class="st">&quot;</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> <span class="st">&quot;&lt;p class=&#39;p&#39;&gt;&quot;</span> <span class="op">+</span> data.desc_p <span class="op">+</span> <span class="st">&quot;&lt;/p&gt;&quot;</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># location link</span></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> <span class="st">&quot;&lt;a href=&quot;</span> <span class="op">+</span> data.google_maps <span class="op">+</span> <span class="st">&quot;&gt;view on map&lt;/a&gt;&quot;</span></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> <span class="st">&quot;&lt;/div&gt;&quot;</span></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>style <span class="op">=</span> <span class="st">&quot;&quot;&quot;&lt;style&gt;</span></span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a><span class="st">div.images-container {</span></span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a><span class="st">    display: flex;</span></span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a><span class="st">    width: 200px;</span></span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a><span class="st">    align-items: center;</span></span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a><span class="st">    margin: 10px;</span></span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a><span class="st">}</span></span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a><span class="st">img.image {</span></span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a><span class="st">    width: auto;</span></span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a><span class="st">    heigh: auto;</span></span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a><span class="st">    margin: 0;</span></span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a><span class="st">    padding: 0;</span></span>
+<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a><span class="st">}</span></span>
+<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a><span class="st">h2.subheader {</span></span>
+<span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a><span class="st">    color: #333;</span></span>
+<span id="cb10-41"><a href="#cb10-41" aria-hidden="true" tabindex="-1"></a><span class="st">    font-size: 20px;</span></span>
+<span id="cb10-42"><a href="#cb10-42" aria-hidden="true" tabindex="-1"></a><span class="st">    align-text: center;</span></span>
+<span id="cb10-43"><a href="#cb10-43" aria-hidden="true" tabindex="-1"></a><span class="st">}</span></span>
+<span id="cb10-44"><a href="#cb10-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-45"><a href="#cb10-45" aria-hidden="true" tabindex="-1"></a><span class="st">p.p {</span></span>
+<span id="cb10-46"><a href="#cb10-46" aria-hidden="true" tabindex="-1"></a><span class="st">    color: #333;</span></span>
+<span id="cb10-47"><a href="#cb10-47" aria-hidden="true" tabindex="-1"></a><span class="st">    font-size: 15px;</span></span>
+<span id="cb10-48"><a href="#cb10-48" aria-hidden="true" tabindex="-1"></a><span class="st">}</span></span>
+<span id="cb10-49"><a href="#cb10-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-50"><a href="#cb10-50" aria-hidden="true" tabindex="-1"></a><span class="st">&lt;/style&gt;&quot;&quot;&quot;</span></span>
+<span id="cb10-51"><a href="#cb10-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-52"><a href="#cb10-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-53"><a href="#cb10-53" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">3</span>):</span>
+<span id="cb10-54"><a href="#cb10-54" aria-hidden="true" tabindex="-1"></a>    display(HTML(style <span class="op">+</span> data_html(i)[i]))</span></code></pre></div>
+<div class="output display_data">
+<style>
+div.images-container {
+    display: flex;
+    width: 200px;
+    align-items: center;
+    margin: 10px;
+}
+
+img.image {
+    width: auto;
+    heigh: auto;
+    margin: 0;
+    padding: 0;
+}
+
+h2.subheader {
+    color: #333;
+    font-size: 20px;
+    align-text: center;
+}
+
+p.p {
+    color: #333;
+    font-size: 15px;
+}
+
+</style><br><div style='width: 700px'><div style='font-size: 20px'>1)</div><div class='images-container'><img class='image' src=https://assets.iwgplc.com/image/upload/CentreImagery/131/131_5.jpg><img class='image' src=https://assets.iwgplc.com/image/upload/CentreImagery/131/131_2.jpg><img class='image' src=https://assets.iwgplc.com/image/upload/CentreImagery/131/131_4.jpg></div><h2 class='subheader'>A prestigious waterside setting</h2>
+<p class='p'>With its favorable climate and great community spirit, Redwood City is attracting a cluster of global companies and ambitious startups. Twin Dolphin Drive lies halfway between San Francisco and San Jose, with easy access to the city and Silicon Valley via the freeway.
+
+Step out onto the terrace to enjoy a break between meetings or enjoy peaceful, inspiring views over the city from your desk. The beautiful waterfront location means you’re not far from a scenic walk, with coffee shops and grills nearby.</p><a href=https://www.google.com/maps/dir//37.5235361034277,-122.258564390404>view on map</a></div>
+</div>
+<div class="output display_data">
+<style>
+div.images-container {
+    display: flex;
+    width: 200px;
+    align-items: center;
+    margin: 10px;
+}
+
+img.image {
+    width: auto;
+    heigh: auto;
+    margin: 0;
+    padding: 0;
+}
+
+h2.subheader {
+    color: #333;
+    font-size: 20px;
+    align-text: center;
+}
+
+p.p {
+    color: #333;
+    font-size: 15px;
+}
+
+</style><br><div style='width: 700px'><div style='font-size: 20px'>2)</div><div class='images-container'><img class='image' src=https://assets.iwgplc.com/image/upload/CentreImagery/221/221_5.jpg><img class='image' src=https://assets.iwgplc.com/image/upload/CentreImagery/221/221_2.jpg><img class='image' src=https://assets.iwgplc.com/image/upload/CentreImagery/221/221_4.jpg></div><h2 class='subheader'>Impressive office in renowned business district</h2>
+<p class='p'>Atlanta Pinnacle boasts a prime downtown position on Peachtree Street in the state capital’s fashionable Buckhead district. The 22-storey glass skyscraper is close to the top-ranking Terry College of Business and less than 15 minutes from PDK airport.
+
+Escape to the dramatic rooftop sky garden for inspiration or use the videoconferencing facilities in one of our colorful meeting rooms. The Pinnacle offers underground parking, its own restaurant and a multitude of trendy eateries and lively bars.</p><a href=https://www.google.com/maps/dir//33.8504455417319,-84.3603915535294>view on map</a></div>
+</div>
+<div class="output display_data">
+<style>
+div.images-container {
+    display: flex;
+    width: 200px;
+    align-items: center;
+    margin: 10px;
+}
+
+img.image {
+    width: auto;
+    heigh: auto;
+    margin: 0;
+    padding: 0;
+}
+
+h2.subheader {
+    color: #333;
+    font-size: 20px;
+    align-text: center;
+}
+
+p.p {
+    color: #333;
+    font-size: 15px;
+}
+
+</style><br><div style='width: 700px'><div style='font-size: 20px'>3)</div><div class='images-container'><img class='image' src=https://assets.iwgplc.com/image/upload/CentreImagery/266/266_5.jpg><img class='image' src=https://assets.iwgplc.com/image/upload/CentreImagery/266/266_2.jpg><img class='image' src=https://assets.iwgplc.com/image/upload/CentreImagery/266/266_4.jpg></div><h2 class='subheader'>Modern design in a leading community</h2>
+<p class='p'>Take advantage of our prime location just two minutes from the world-famous Research Triangle Park. Just off the I-40 and only seven minutes from Raleigh-Durham International Airport, our Meridian Parkway Office Spaces are perfectly located.
+
+Floor to ceiling windows in this modern building provide generous amounts of light and contribute towards a relaxed, professional business atmosphere. Amenities include an on-site café while the Research Park’s many bars and restaurants are situated just a short hop across the interstate.</p><a href=https://www.google.com/maps/dir//35.9112578969551,-78.8999671779098>view on map</a></div>
+</div>
+</div>
+</body>
+</html>
